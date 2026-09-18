@@ -1,122 +1,149 @@
 # SmartSpend
 
-SmartSpend is a full-stack personal expense tracker designed to help users manage income, expenses, budgets, savings goals, and wishlist purchases with smart recommendations based on real financial data.
+SmartSpend is a full-stack personal finance application for tracking income and expenses, planning budgets, monitoring savings goals, and evaluating wishlist purchases.
 
 ## Features
 
-- User registration and login with JWT authentication
-- Dashboard with balance, income, expenses, savings, and budget cards
-- Real-time charts powered by Recharts and MongoDB data
-- Transaction management with add, edit, delete, search, filter, and sort
-- Budget management with category budgets, usage tracking, and warnings
-- Smart saving suggestions based on actual spending and budget usage
-- Saving goals with progress tracking and recommended monthly savings
-- Wishlist with purchase recommendations and affordability insights
-- Responsive UI with dark/light/system theme support
+- JWT-based registration, login, and profile management
+- Dashboard with balance, income, expense, savings, and budget summaries
+- Transaction management with search, filtering, sorting, editing, and deletion
+- Category budgets with usage tracking and overspending warnings
+- Savings goals with progress tracking and monthly saving recommendations
+- Spending-based saving suggestions
+- Wishlist affordability and purchase recommendations
+- Reports and charts built with Recharts
+- Responsive interface with light, dark, and system themes
+
+## Screenshots
+
+| Home | Dashboard |
+| --- | --- |
+| ![Home page](Output/Home%20Page.png) | ![Dashboard](Output/Dashboard.png) |
+
+| Transactions | Add Expense |
+| --- | --- |
+| ![Transaction management](Output/Transaction%20Management.png) | ![Add expense](Output/Add%20Expense.png) |
+
+| Saving Goal | Reports |
+| --- | --- |
+| ![Saving goal](Output/Saving%20goal.png) | ![Reports](Output/Report%20Page.png) |
 
 ## Technology Stack
 
-- Frontend: React, JavaScript, React Router, Axios, Recharts
-- Backend: Node.js, Express.js, REST API
-- Database: MongoDB, Mongoose
-- Authentication: JWT, bcrypt
+- Frontend: React 18, Vite, React Router, Axios, Recharts, jsPDF
+- Backend: Node.js, Express, REST API, CORS
+- Database: MongoDB with Mongoose
+- Authentication: JSON Web Tokens and bcryptjs
 
 ## Project Structure
 
-```
-SmartSpend/
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── context/
-│   │   ├── hooks/
-│   │   ├── utils/
-│   │   ├── assets/
-   │   ├── App.jsx
-│   │   └── main.jsx
-│   └── package.json
-│
+```text
+.
 ├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── server.js
-│   └── package.json
-│
-├── .gitignore
-└── README.md
+│   ├── config/          # Database connection
+│   ├── controllers/     # Request handlers
+│   ├── middleware/      # Authentication and error handling
+│   ├── models/          # Mongoose models
+│   ├── routes/          # API routes
+│   ├── services/        # Recommendation and suggestion logic
+│   └── server.js        # Express entry point
+├── frontend/
+│   ├── src/components/  # Shared UI components
+│   ├── src/context/     # Authentication and theme state
+│   ├── src/pages/       # Application screens
+│   └── src/services/    # API clients
+├── Output/              # Application screenshots
+├── DOCUMENTATION.md     # Extended technical documentation
+└── package.json         # Root development scripts
 ```
 
-## Installation
+## Getting Started
 
-### Backend
+### Prerequisites
 
-1. Open terminal in `backend/`
-2. Run `npm install`
-3. Create a `.env` file with:
+- Node.js 18 or later
+- npm
+- A MongoDB database, local or hosted through MongoDB Atlas
 
+### 1. Install dependencies
+
+From the project root:
+
+```bash
+npm run install-all
 ```
-MONGO_URI=
-JWT_SECRET=
+
+This installs dependencies in both `backend/` and `frontend/`.
+
+### 2. Configure the backend
+
+Create `backend/.env` using `backend/.env.example` as a template:
+
+```env
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.example.mongodb.net/smartspend?retryWrites=true&w=majority
+JWT_SECRET=replace_with_a_long_random_secret
 PORT=5000
 ```
 
-4. Start backend:
+Do not commit `.env` or real credentials. They are excluded by `.gitignore`.
 
-```
+### 3. Start the application
+
+From the project root, start both servers:
+
+```bash
 npm run dev
 ```
 
-### Frontend
+Then open [http://localhost:3000](http://localhost:3000). The backend API runs at `http://localhost:5000/api`.
 
-1. Open terminal in `frontend/`
-2. Run `npm install`
-3. Start frontend:
+To start either side separately:
 
-```
+```bash
+# Backend
+cd backend
+npm run dev
+
+# Frontend, in a second terminal
+cd frontend
 npm run dev
 ```
 
-## API Documentation
+## Available Scripts
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/auth/profile`
-- `PUT /api/auth/profile`
-- `GET /api/transactions`
-- `POST /api/transactions`
-- `PUT /api/transactions/:id`
-- `DELETE /api/transactions/:id`
-- `GET /api/dashboard/summary`
-- `GET /api/dashboard/analytics`
-- `GET /api/budgets`
-- `POST /api/budgets`
-- `PUT /api/budgets/:id`
-- `DELETE /api/budgets/:id`
-- `GET /api/suggestions`
-- `GET /api/goals`
-- `POST /api/goals`
-- `PUT /api/goals/:id`
-- `DELETE /api/goals/:id`
-- `GET /api/wishlist`
-- `POST /api/wishlist`
-- `PUT /api/wishlist/:id`
-- `DELETE /api/wishlist/:id`
-- `GET /api/wishlist/:id/recommendation`
+| Location | Command | Purpose |
+| --- | --- | --- |
+| Root | `npm run install-all` | Install backend and frontend dependencies |
+| Root | `npm run dev` | Run backend and frontend together |
+| Backend | `npm run dev` | Run the API with nodemon |
+| Backend | `npm start` | Run the API with Node.js |
+| Backend | `npm run normalize-dates` | Normalize stored transaction dates |
+| Frontend | `npm run dev` | Start the Vite development server |
+| Frontend | `npm run build` | Create a production build |
+| Frontend | `npm run preview` | Preview the production build |
 
-## Future Enhancements
+## API Overview
 
-- Add bank sync and transaction import
-- Add recurring payments and reminders
-- Add mobile app support
-- Add export/import CSV
-- Add multi-currency support
-- Add more advanced analytics and reports
+All API routes are served below `/api` and protected routes require a bearer token.
+
+| Resource | Endpoints |
+| --- | --- |
+| Authentication | `POST /auth/register`, `POST /auth/login`, `GET /auth/profile`, `PUT /auth/profile` |
+| Transactions | `GET`, `POST /transactions`; `PUT`, `DELETE /transactions/:id` |
+| Dashboard | `GET /dashboard/summary`, `GET /dashboard/analytics` |
+| Budgets | `GET`, `POST /budgets`; `PUT`, `DELETE /budgets/:id` |
+| Suggestions | `GET /suggestions` |
+| Goals | `GET`, `POST /goals`; `PUT`, `DELETE /goals/:id` |
+| Wishlist | `GET`, `POST /wishlist`; `PUT`, `DELETE /wishlist/:id`; `GET /wishlist/:id/recommendation` |
+
+## Future Improvements
+
+- Bank synchronization and transaction imports
+- Recurring payment reminders
+- CSV export and import
+- Multi-currency support
+- Mobile application support
+
+## License
+
+This project is for educational and personal use. Add a license file before distributing it as open source.
